@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WinRaider — Security Assessment Toolkit</title>
+<meta name="description" content="WinRaider documentation — a Python-based Windows security assessment toolkit.">
+<style>
+:root{
+  --bg:#07090d;--panel:#0d1118;--panel2:#111722;--text:#e8edf5;--muted:#8c98aa;
+  --line:#202938;--accent:#65f6b2;--accent2:#65a8ff;--warn:#ffc857;--danger:#ff6b7a;
+  --shadow:0 20px 60px rgba(0,0,0,.35);--radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 75% -10%,rgba(101,168,255,.13),transparent 30%),radial-gradient(circle at 15% 20%,rgba(101,246,178,.07),transparent 28%),var(--bg);color:var(--text);font:15px/1.7 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.layout{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;padding:28px 20px;border-right:1px solid var(--line);background:rgba(7,9,13,.82);backdrop-filter:blur(18px);overflow:auto}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.logo-mark{width:40px;height:40px;border:1px solid rgba(101,246,178,.5);border-radius:12px;display:grid;place-items:center;color:var(--accent);box-shadow:0 0 30px rgba(101,246,178,.12)}
+.logo strong{font-size:18px;letter-spacing:.2px}
+.logo small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.nav-title{color:#657186;font-size:10px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;margin:24px 10px 8px}
+.nav a{display:block;padding:9px 11px;border-radius:10px;color:#9ba7b8;transition:.2s}
+.nav a:hover{background:var(--panel2);color:var(--text);transform:translateX(2px)}
+.sidebar-foot{margin-top:30px;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.015);font-size:12px;color:var(--muted)}
+.main{max-width:1180px;width:100%;margin:auto;padding:40px 56px 90px}
+.hero{min-height:610px;display:flex;align-items:center;position:relative}
+.grid-glow{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(101,246,178,.25);background:rgba(101,246,178,.05);color:var(--accent);padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.dot{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 15px var(--accent);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.75)}}
+h1{font-size:clamp(52px,8vw,96px);line-height:.92;letter-spacing:-5px;margin:24px 0 22px;max-width:900px}
+.gradient{background:linear-gradient(100deg,#fff 10%,var(--accent) 48%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;color:#aeb8c7;max-width:720px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{padding:11px 16px;border:1px solid var(--line);border-radius:11px;background:var(--panel);font-weight:700;transition:.2s;cursor:pointer}
+.btn:hover{border-color:#344255;transform:translateY(-2px)}
+.btn.primary{background:var(--accent);color:#07100b;border-color:var(--accent);box-shadow:0 10px 30px rgba(101,246,178,.13)}
+section{scroll-margin-top:28px;padding:70px 0;border-top:1px solid var(--line)}
+.section-kicker{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+h2{font-size:36px;line-height:1.1;letter-spacing:-1.5px;margin:8px 0 12px}
+.lead{color:var(--muted);max-width:750px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:28px}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.icon{font-size:22px;margin-bottom:15px}.card h3{margin:0 0 7px}.card p{margin:0;color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:separate;border-spacing:0;margin-top:26px;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.015)}
+th,td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line)}
+th{color:#aab5c5;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;background:var(--panel2)}
+tr:last-child td{border-bottom:0}td{color:#cbd3df}td:first-child{color:var(--accent);font-weight:800}
+pre{position:relative;margin:18px 0;padding:20px;overflow:auto;border:1px solid var(--line);border-radius:15px;background:#05070a;color:#dce5f1;box-shadow:var(--shadow)}
+code{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px}
+.inline{padding:2px 6px;border-radius:6px;background:#161d28;color:var(--accent);font-family:monospace}
+.copy{position:absolute;right:10px;top:10px;border:1px solid #283343;background:#111722;color:#aeb8c7;border-radius:8px;padding:5px 8px;cursor:pointer;font-size:11px}
+.args{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.arg{border:1px solid var(--line);border-radius:14px;padding:16px;background:rgba(255,255,255,.015)}
+.arg code{color:var(--accent)}.arg p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.notice{margin-top:25px;padding:18px 20px;border-radius:14px;border:1px solid rgba(255,200,87,.25);background:rgba(255,200,87,.05);color:#cfc4a6}
+.danger{border-color:rgba(255,107,122,.28);background:rgba(255,107,122,.05);color:#d8b0b6}
+.author{display:flex;align-items:center;gap:18px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+.avatar{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#07100b;font-weight:1000}
+footer{padding:28px 0;color:#657186;font-size:12px;border-top:1px solid var(--line)}
+.menu{display:none}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.menu{display:block;position:fixed;right:18px;top:18px;z-index:10}.main{padding:28px 20px 70px}.cards{grid-template-columns:1fr}.args{grid-template-columns:1fr}.hero{min-height:650px}h1{letter-spacing:-3px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <a class="logo" href="#top">
+    <div class="logo-mark">⌁</div><div><strong>WinRaider</strong><small>Documentation</small></div>
+  </a>
+  <div class="nav-title">Overview</div>
+  <nav class="nav">
+    <a href="#features">Features</a><a href="#install">Installation</a><a href="#usage">Usage</a>
+    <a href="#ports">Ports</a><a href="#wordlists">Wordlists</a>
+  </nav>
+  <div class="nav-title">Project</div>
+  <nav class="nav"><a href="#lab">Lab setup</a><a href="#legal">Legal</a><a href="#author">Author</a><a href="#license">License</a></nav>
+  <div class="sidebar-foot">⚠️ For authorized security testing, education, and research only.</div>
+</aside>
+
+<main class="main" id="top">
+  <button class="btn menu" onclick="document.querySelector('.sidebar').style.display='block'">☰</button>
+  <header class="hero">
+    <div class="grid-glow"></div>
+    <div>
+      <span class="eyebrow"><span class="dot"></span> Python · Windows · Security</span>
+      <h1>Windows security testing,<br><span class="gradient">without the clutter.</span></h1>
+      <p>WinRaider is a Python-based assessment toolkit for auditing commonly exposed Windows services, testing authorized credentials, and integrating supported workflows with Metasploit.</p>
+      <div class="actions">
+        <a class="btn primary" href="#install">Get started →</a>
+        <a class="btn" href="#usage">CLI reference</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <span class="section-kicker">01 · Capabilities</span>
+    <h2>Everything in one focused CLI.</h2>
+    <p class="lead">A compact workflow for discovery, authenticated assessment, vulnerability checks, credential auditing, and optional Metasploit integration.</p>
+    <div class="cards">
+      <div class="card"><div class="icon">⌁</div><h3>7 critical services</h3><p>Scans SMB, RDP, WinRM, NetBIOS, MSRPC, and SSH endpoints across ports 445, 3389, 5985, 5986, 139, 135, and 22.</p></div>
+      <div class="card"><div class="icon">◈</div><h3>Authenticated testing</h3><p>Supports authorized SMB file access, RDP GUI, WinRM shell, and SSH shell workflows using supplied credentials.</p></div>
+      <div class="card"><div class="icon">⌕</div><h3>Vulnerability checks</h3><p>Assesses known issues including EternalBlue, BlueKeep, SMBGhost, WinRM weaknesses, NetBIOS disclosure, and SSH vulnerabilities.</p></div>
+      <div class="card"><div class="icon">⚿</div><h3>Credential auditing</h3><p>Accepts username and password wordlists for controlled credential-security assessments.</p></div>
+      <div class="card"><div class="icon">✦</div><h3>Metasploit integration</h3><p>Can use a locally available msfconsole for supported security-testing workflows.</p></div>
+      <div class="card"><div class="icon">▣</div><h3>Clean CLI</h3><p>Banner, quiet mode, verbose mode, authentication flags, wordlists, and configurable Metasploit options.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <span class="section-kicker">02 · Installation</span>
+    <h2>Up and running in minutes.</h2>
+    <p class="lead">Use a dedicated Python environment when developing or testing WinRaider.</p>
+    <pre><button class="copy" onclick="copyCode(this)">Copy</button><code>git clone https://github.com/YOUR_USERNAME/WinRaider.git
+cd WinRaider
+
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+python winraider.py --help</code></pre>
+    <div class="notice">Replace <span class="inline">YOUR_USERNAME</span> with the repository owner. Metasploit is optional and only needed for its supported integration workflows.</div>
+  </section>
+
+  <section id="usage">
+    <span class="section-kicker">03 · CLI</span>
+    <h2>Command-line reference.</h2>
+    <p class="lead">Start with a target, then add only the options needed for your authorized assessment.</p>
+    <pre><button class="copy" onclick="copyCode(this)">Copy</button><code>python winraider.py -t 192.0.2.10
+python winraider.py -t 192.0.2.10 -v
+python winraider.py -t 192.0.2.10 -q
+python winraider.py -t 192.0.2.10 -u administrator -p "&lt;PASSWORD&gt;"
+python winraider.py -t 192.0.2.10 --users users.txt -w passwords.txt
+python winraider.py -t 192.0.2.10 --msfpath "C:\path\to\msfconsole.exe"</code></pre>
+    <div class="args">
+      <div class="arg"><code>-t, --target</code><p>Required target IP address.</p></div>
+      <div class="arg"><code>-u, --username</code><p>Username for authenticated testing.</p></div>
+      <div class="arg"><code>-p, --password</code><p>Password for authenticated testing.</p></div>
+      <div class="arg"><code>-w, --wordlist</code><p>Password wordlist.</p></div>
+      <div class="arg"><code>--users</code><p>Username wordlist.</p></div>
+      <div class="arg"><code>--msfpath</code><p>Path to Metasploit msfconsole.</p></div>
+      <div class="arg"><code>--lhost</code><p>Local host IP for supported Metasploit workflows.</p></div>
+      <div class="arg"><code>-v, --verbose</code><p>Verbose output.</p></div>
+      <div class="arg"><code>-q, --quiet</code><p>Quiet mode.</p></div>
+    </div>
+  </section>
+
+  <section id="ports">
+    <span class="section-kicker">04 · Service matrix</span>
+    <h2>Supported ports.</h2>
+    <p class="lead">The toolkit focuses on high-value Windows and remote-access services.</p>
+    <table>
+      <thead><tr><th>Port</th><th>Service</th><th>Assessment types</th></tr></thead>
+      <tbody>
+        <tr><td>445</td><td>SMB</td><td>Discovery · authenticated access · SMB vulnerability checks · credential testing</td></tr>
+        <tr><td>3389</td><td>RDP</td><td>Discovery · authenticated RDP testing · BlueKeep assessment · credential testing</td></tr>
+        <tr><td>5985</td><td>WinRM HTTP</td><td>Discovery · authentication testing · configuration/security checks</td></tr>
+        <tr><td>5986</td><td>WinRM HTTPS</td><td>Discovery · authenticated WinRM testing · configuration/security checks</td></tr>
+        <tr><td>139</td><td>NetBIOS</td><td>Discovery · information-disclosure assessment · credential testing</td></tr>
+        <tr><td>135</td><td>MSRPC</td><td>Discovery · RPC-related security assessment</td></tr>
+        <tr><td>22</td><td>SSH</td><td>Discovery · authenticated SSH testing · SSH security/vulnerability checks · credential testing</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="wordlists">
+    <span class="section-kicker">05 · Wordlists</span>
+    <h2>Simple, line-by-line format.</h2>
+    <p class="lead">Use plain-text files with one username or password per line. Keep credential testing limited to accounts and systems explicitly included in your authorization.</p>
+    <div class="cards">
+      <div class="card"><h3>users.txt</h3><pre><code>administrator
+admin
+test
+user</code></pre></div>
+      <div class="card"><h3>passwords.txt</h3><pre><code>password123
+Password123!
+ExamplePassword
+Winter2026!</code></pre></div>
+    </div>
+  </section>
+
+  <section id="lab">
+    <span class="section-kicker">06 · Safe environment</span>
+    <h2>Build a contained lab.</h2>
+    <p class="lead">For development and education, use dedicated virtual machines and an isolated network.</p>
+    <pre><code>┌───────────────────────┐
+│    WinRaider Host     │
+│       Windows         │
+└───────────┬───────────┘
+            │
+      Isolated Network
+            │
+┌───────────▼───────────┐
+│   Windows Test VM     │
+│ SMB · RDP · WinRM     │
+│ NetBIOS · MSRPC · SSH │
+└───────────────────────┘</code></pre>
+  </section>
+
+  <section id="legal">
+    <span class="section-kicker">07 · Responsible use</span>
+    <h2>Legal disclaimer.</h2>
+    <div class="notice danger">
+      <strong>Authorization is required.</strong><br><br>
+      WinRaider is intended strictly for authorized security testing, education, research, and defensive assessment.
+      You are responsible for complying with applicable laws, contracts, policies, and rules. Do not use the software
+      to access systems without permission, obtain unauthorized credentials, disrupt systems, or deploy exploits against
+      third-party infrastructure. The author and contributors are not responsible for misuse, damage, data loss,
+      unauthorized access, or other consequences arising from use of the software.
+    </div>
+  </section>
+
+  <section id="author">
+    <span class="section-kicker">08 · Project</span>
+    <h2>Author.</h2>
+    <div class="author">
+      <div class="avatar">WR</div>
+      <div><strong>Your Name</strong><div style="color:var(--muted);font-size:13px">WinRaider · Python · Windows Security</div></div>
+    </div>
+  </section>
+
+  <section id="license">
+    <span class="section-kicker">09 · License</span>
+    <h2>MIT License.</h2>
+    <p class="lead">WinRaider is released under the MIT License. See the repository's <span class="inline">LICENSE</span> file for the complete text.</p>
+    <pre><code>MIT License
+
+Copyright (c) 2026 Your Name
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files, to deal in the Software
+without restriction, subject to the conditions of the MIT License.</code></pre>
+  </section>
+
+  <footer>WinRaider Documentation · Built as a single HTML file · Use responsibly.</footer>
+</main>
+</div>
+<script>
+function copyCode(btn){
+  const code=btn.parentElement.querySelector('code').innerText;
+  navigator.clipboard.writeText(code);
+  const old=btn.innerText; btn.innerText='Copied ✓';
+  setTimeout(()=>btn.innerText=old,1200);
+}
+</script>
+</body>
+</html>

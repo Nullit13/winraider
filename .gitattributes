@@ -1,0 +1,4 @@
+docs/* linguist-documentation
+docs/* linguist-vendored
+wordlists/* linguist-vendored
+*.txt linguist-vendored
