@@ -1,4 +1,4 @@
-# ⚡ WinRaider
+# WinRaider
 
 ```text
 ██╗    ██╗██╗███╗   ██╗██████╗  █████╗ ██╗██████╗ ███████╗██████╗
@@ -8,360 +8,399 @@
 ╚███╔███╔╝██║██║ ╚████║██║  ██║██║  ██║██║██████╔╝███████╗██║  ██║
  ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝
 
-          Windows Security Assessment & Penetration Testing Toolkit
+                     Windows Security Testing Toolkit
+                              Version 2.0
 ```
 
-> **WinRaider** is a Python-based Windows penetration-testing and security-assessment toolkit designed for authorized security testing, research, and educational lab environments.
+WinRaider is a Windows security testing tool written in Python. It brings network scanning, Windows device discovery, vulnerability checks, credential testing, brute-force testing, logging, reporting, and Metasploit integration into one CLI tool.
+
+> **For authorized security testing and lab environments only.**
 
 ---
 
-## 🚀 Features
+## Features
 
-WinRaider provides a unified CLI for assessing commonly exposed Windows services.
-
-### 🔎 Network & Service Scanning
-
-Scans seven commonly targeted Windows/network services:
-
-* **445 — SMB**
-* **3389 — RDP**
-* **5985 — WinRM HTTP**
-* **5986 — WinRM HTTPS**
-* **139 — NetBIOS**
-* **135 — MSRPC**
-* **22 — SSH**
-
-### 🔐 Authenticated Testing
-
-When authorized credentials are supplied, WinRaider can test:
-
-* SMB authenticated file access
-* RDP authenticated GUI access
-* WinRM authenticated shell access
-* SSH authenticated shell access
-
-### 🛡️ Unauthenticated Vulnerability Assessment
-
-WinRaider includes checks for security issues associated with:
-
-* EternalBlue / MS17-010
-* BlueKeep / CVE-2019-0708
-* SMBGhost / CVE-2020-0796
-* WinRM authentication/configuration weaknesses
-* NetBIOS information disclosure
-* SSH-related vulnerabilities
-
-### 🔑 Credential Testing
-
-Supports username and password wordlists for authorized credential-security assessments.
-
-### 💥 Metasploit Integration
-
-If `msfconsole` is available, WinRaider can integrate with Metasploit for supported security-testing workflows.
-
-The Metasploit executable can be supplied explicitly with:
-
-```text
---msfpath
-```
-
-### 🖥️ Professional CLI
-
-Includes:
-
-* Startup banner
-* Quiet mode
-* Verbose mode
-* Command-line argument parsing
-* Target-oriented scanning
-* Optional authentication parameters
-* Optional wordlists
-* Optional Metasploit configuration
+* Port scanning for common Windows services
+* Windows device discovery on the local network
+* Checks for common Windows vulnerabilities
+* SMB, RDP, WinRM, and SSH assessment
+* Credential-based testing
+* Username and password wordlist testing
+* Multi-threaded brute-force support
+* Progress bar for long-running tasks
+* Activity logging
+* Report generation
+* Colored terminal output
+* Quiet and verbose modes
+* Metasploit integration
 
 ---
 
-# 📦 Installation
+## Supported Ports
+
+| Port   | Service | Description                          |
+| ------ | ------- | ------------------------------------ |
+| `445`  | SMB     | Primary Windows file-sharing service |
+| `3389` | RDP     | Remote Desktop Protocol              |
+| `5985` | WinRM   | Windows Remote Management over HTTP  |
+| `5986` | WinRM   | Windows Remote Management over HTTPS |
+| `139`  | NetBIOS | Legacy Windows networking            |
+| `135`  | MSRPC   | Microsoft RPC                        |
+| `22`   | SSH     | Secure Shell                         |
+
+---
 
 ## Requirements
 
-* Windows
-* Python 3.x
-* Network access to an **authorized** test environment
-* Optional: Metasploit Framework for Metasploit integration
+* Python 3.6+
+* Nmap
+* `python-nmap`
+* `tqdm`
+
+Install the Python dependencies with:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Nmap must also be installed and available on your system for scanning features.
+
+---
+
+## Installation
 
 Clone the repository:
 
-```bash
+```powershell
 git clone https://github.com/Nullit13/winraider.git
 cd winraider
 ```
 
-Create a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Activate it on Windows:
+Install the dependencies:
 
 ```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
 ```
 
-Verify the installation:
+You can run WinRaider directly from the source:
 
-```bash
-python winraider.py --help
+```powershell
+python main.py --help
 ```
 
 ---
 
-# 🛠️ Usage
+## Building the EXE
 
-After building the project, WinRaider can be run directly using the compiled executable:
+WinRaider can be packaged as a standalone Windows executable with PyInstaller.
+
+Install PyInstaller:
 
 ```powershell
-.\winraider.exe -t <TARGET>
+pip install pyinstaller
 ```
 
-For example, against a machine in an isolated authorized lab:
+Build the executable:
 
 ```powershell
-.\winraider.exe -t 192.0.2.10
+pyinstaller --onefile --console --name winraider --add-data "wordlists;wordlists" --hidden-import=nmap main.py
 ```
 
-> `192.0.2.0/24` is reserved for documentation and examples. Replace it with an IP address belonging to a system you are explicitly authorized to test.
+The executable will be created inside the `dist` directory.
 
-## Verbose Mode
-
-Display additional diagnostic information:
+Example:
 
 ```powershell
-.\winraider.exe -t 192.0.2.10 -v
-```
-
-## Quiet Mode
-
-Suppress non-essential output:
-
-```powershell
-.\winraider.exe -t 192.0.2.10 -q
-```
-
-## Authenticated Assessment
-
-Provide credentials for authorized authenticated testing:
-
-```powershell
-.\winraider.exe -t 192.0.2.10 -u administrator -p "<PASSWORD>"
-```
-
-## Password Wordlist
-
-Specify a password wordlist for authorized credential testing:
-
-```powershell
-.\winraider.exe -t 192.0.2.10 -w passwords.txt
-```
-
-## Username + Password Wordlists
-
-```powershell
-.\winraider.exe -t 192.0.2.10 --users users.txt -w passwords.txt
-```
-
-Only use credential-testing functionality against systems and accounts for which you have explicit authorization.
-
-## Metasploit Configuration
-
-Specify the location of `msfconsole`:
-
-```powershell
-.\winraider.exe -t 192.0.2.10 --msfpath "C:\path\to\msfconsole.exe"
-```
-
-A local host can be supplied for authorized reverse-shell testing:
-
-```powershell
-.\winraider.exe -t 192.0.2.10 --msfpath "C:\path\to\msfconsole.exe" --lhost 192.0.2.20
+.\dist\winraider.exe --help
 ```
 
 ---
 
-# 📋 Command-Line Arguments
+## Usage
 
-| Argument           | Description                                         |
-| ------------------ | --------------------------------------------------- |
-| `-t`, `--target`   | **Required.** Target IP address                     |
-| `-u`, `--username` | Username for authentication                         |
-| `-p`, `--password` | Password for authentication                         |
-| `-w`, `--wordlist` | Password wordlist for authorized credential testing |
-| `--users`          | Username wordlist for authorized credential testing |
-| `--msfpath`        | Path to Metasploit `msfconsole`                     |
-| `--lhost`          | Local host IP for supported Metasploit workflows    |
-| `-v`, `--verbose`  | Verbose output                                      |
-| `-q`, `--quiet`    | Quiet mode                                          |
+### Discover Windows Devices
 
----
+Scan the local network for Windows devices:
 
-# 🔌 Supported Ports & Assessment Types
-
-|     Port | Service     | Assessment Types                                                                                    |
-| -------: | ----------- | --------------------------------------------------------------------------------------------------- |
-|  **445** | SMB         | Service discovery, authenticated SMB access, SMB vulnerability checks, credential testing           |
-| **3389** | RDP         | Service discovery, authenticated RDP testing, BlueKeep assessment, credential testing               |
-| **5985** | WinRM HTTP  | Service discovery, authentication testing, WinRM configuration/security checks                      |
-| **5986** | WinRM HTTPS | Service discovery, authenticated WinRM testing, configuration/security checks                       |
-|  **139** | NetBIOS     | Service discovery, information-disclosure assessment, credential testing                            |
-|  **135** | MSRPC       | Service discovery and RPC-related security assessment                                               |
-|   **22** | SSH         | Service discovery, authenticated SSH testing, SSH security/vulnerability checks, credential testing |
-
----
-
-# 📄 Wordlist Format
-
-WinRaider accepts plain-text wordlists.
-
-Each entry should occupy a separate line.
-
-### Password wordlist
-
-```text
-password123
-Password123!
-Winter2026!
-ExamplePassword
+```powershell
+python main.py --discover
 ```
 
-### Username wordlist
+---
+
+### Port Scan
+
+Scan the target for supported Windows services:
+
+```powershell
+python main.py -t 192.168.0.101 --scan
+```
+
+---
+
+### Vulnerability Check
+
+Run the available vulnerability checks without providing credentials:
+
+```powershell
+python main.py -t 192.168.0.101 --zero
+```
+
+---
+
+### Credential Testing
+
+Test a target using provided credentials:
+
+```powershell
+python main.py -t 192.168.0.101 --creds -u Abed -p password
+```
+
+---
+
+### Brute Force
+
+Run a username and password wordlist test:
+
+```powershell
+python main.py -t 192.168.0.101 --brute -w wordlists/passwords.txt --users wordlists/users.txt --threads 20
+```
+
+The number of threads can be changed with `--threads`.
+
+---
+
+### Logging
+
+Save activity to `winraider.log`:
+
+```powershell
+python main.py -t 192.168.0.101 --scan --log
+```
+
+---
+
+### Generate a Report
+
+Save the scan results to a report file:
+
+```powershell
+python main.py -t 192.168.0.101 --scan --report report.txt
+```
+
+---
+
+### Verbose Mode
+
+Show additional information while WinRaider is running:
+
+```powershell
+python main.py -t 192.168.0.101 --scan -v
+```
+
+---
+
+### Quiet Mode
+
+Run with minimal terminal output:
+
+```powershell
+python main.py -t 192.168.0.101 --scan -q
+```
+
+---
+
+## Command-Line Arguments
+
+| Argument           | Description                                                   |
+| ------------------ | ------------------------------------------------------------- |
+| `-t`, `--target`   | Target IP address. Required for target-based operations.      |
+| `--discover`       | Discover Windows devices on the local network.                |
+| `-u`, `--username` | Username used for authentication.                             |
+| `-p`, `--password` | Password used for authentication.                             |
+| `-w`, `--wordlist` | Password wordlist. Default: `wordlists/passwords.txt`         |
+| `--users`          | Username wordlist. Default: `wordlists/users.txt`             |
+| `--threads`        | Number of threads used for brute-force testing. Default: `10` |
+| `--msfpath`        | Path to the Metasploit `msfconsole` executable.               |
+| `--lhost`          | Local host IP used for Metasploit operations.                 |
+| `-v`, `--verbose`  | Enable verbose output.                                        |
+| `-q`, `--quiet`    | Enable quiet mode.                                            |
+| `--log`            | Save activity to `winraider.log`.                             |
+| `--report`         | Save results to a report file.                                |
+| `--scan`           | Run a port scan only.                                         |
+| `--zero`           | Run vulnerability checks without credentials.                 |
+| `--creds`          | Run testing using supplied credentials.                       |
+| `--brute`          | Run username/password wordlist testing.                       |
+
+---
+
+## Wordlists
+
+WinRaider supports separate username and password wordlists.
+
+### Username List
 
 ```text
 administrator
 admin
-guest
-test
 user
+guest
 ```
 
-Blank lines should generally be avoided.
-
-For example:
+### Password List
 
 ```text
-users.txt
-├── administrator
-├── admin
-├── test
-└── user
+password
+Password123
+admin123
 ```
+
+Put one entry on each line.
+
+Avoid unnecessary spaces or empty lines in the wordlists.
+
+---
+
+## Included Wordlists
+
+The repository includes:
 
 ```text
-passwords.txt
-├── password123
-├── Password123!
-├── ExamplePassword
-└── Winter2026!
+wordlists/
+├── users.txt
+└── passwords.txt
 ```
 
-When using wordlists, keep testing constrained to accounts and systems explicitly included within your authorization.
+* `wordlists/users.txt` — Username list
+* `wordlists/passwords.txt` — Password list
 
 ---
 
-# 🧪 Recommended Lab Environment
-
-For safe testing and development, use WinRaider against machines specifically configured as security-testing targets.
-
-A suitable lab can contain:
+## Project Structure
 
 ```text
-┌───────────────────────┐
-│    WinRaider Host     │
-│       Windows         │
-└───────────┬───────────┘
-            │
-            │ Isolated Lab Network
-            │
-┌───────────▼───────────┐
-│   Windows Test VM     │
-│  SMB / RDP / WinRM    │
-│  NetBIOS / MSRPC      │
-└───────────────────────┘
+WinRaider/
+├── main.py
+├── requirements.txt
+├── README.md
+├── wordlists/
+│   ├── users.txt
+│   └── passwords.txt
+└── ...
 ```
 
-Avoid running intrusive testing against systems that you do not own or have explicit permission to assess.
+---
+
+## Logging & Reports
+
+WinRaider can save activity and scan results to files.
+
+Enable logging:
+
+```powershell
+python main.py -t 192.168.0.101 --scan --log
+```
+
+Generate a report:
+
+```powershell
+python main.py -t 192.168.0.101 --scan --report report.txt
+```
+
+This makes it easier to keep records of authorized security assessments.
 
 ---
 
-# ⚖️ Legal Disclaimer
+## Metasploit Integration
 
-**WinRaider is intended strictly for authorized security testing, education, research, and defensive security assessment.**
+WinRaider supports integration with Metasploit through `msfconsole`.
 
-You are solely responsible for ensuring that your use of this software complies with all applicable laws, regulations, contracts, and organizational policies.
+Specify the path to your Metasploit installation:
 
-Do **not** use WinRaider to:
+```powershell
+python main.py -t 192.168.0.101 --msfpath "C:\path\to\msfconsole.exe"
+```
 
-* Access systems without authorization
-* Attack third-party infrastructure
-* Attempt to obtain unauthorized credentials
-* Disrupt or damage systems or networks
-* Deploy exploits against systems without explicit permission
-* Circumvent security controls without authorization
+A local host address can also be supplied when required:
 
-The author and contributors are **not responsible for misuse, damage, data loss, unauthorized access, or any other consequences resulting from use of this software**.
+```powershell
+python main.py -t 192.168.0.101 --msfpath "C:\path\to\msfconsole.exe" --lhost 192.168.0.102
+```
 
-By using WinRaider, you acknowledge that you are responsible for obtaining appropriate authorization before conducting any security assessment.
-
----
-
-# 👤 Author
-
-**Adam Abed**
-
-* GitHub: `@nullit13`
-* Project: `WinRaider`
-* Language: Python
+Use Metasploit functionality only against systems where you have explicit authorization.
 
 ---
 
-# 📜 License
+## Recommended Lab Setup
 
-WinRaider is released under the **MIT License**.
+For testing and development, use an isolated environment such as:
 
 ```text
-MIT License
-
-Copyright (c) 2026 Adam Abed
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files, to deal in the Software
-without restriction, including without limitation the rights to use, copy,
-modify, merge, publish, distribute, sublicense, and/or sell copies of the
-Software, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+┌──────────────────────┐
+│    Windows Target    │
+│     Test Machine     │
+└──────────┬───────────┘
+           │
+        Isolated
+        Network
+           │
+┌──────────▼───────────┐
+│     WinRaider        │
+│    Testing Machine   │
+└──────────────────────┘
 ```
 
-See [`LICENSE`](LICENSE) for the complete license text.
+A virtualized lab is recommended so testing does not affect systems or networks that are not part of the assessment.
 
 ---
 
-## ⭐ Project Goals
+## Version 2.0
 
-WinRaider aims to provide security researchers, students, and penetration testers with a single Python-based interface for assessing common Windows network services in controlled environments.
+Version 2.0 adds several improvements over the previous version, including:
 
-**Use it responsibly. Test only systems you are authorized to test.**
+* Windows device discovery
+* Logging support
+* Report generation
+* Multi-threaded brute-force testing
+* Configurable thread count
+* Dedicated scan, vulnerability, credential, and brute-force modes
+* Improved CLI output
+* Metasploit configuration options
+
+---
+
+## Legal Disclaimer
+
+WinRaider is provided for **educational purposes, security research, authorized penetration testing, and controlled lab environments**.
+
+You may only use WinRaider against systems that you own or have explicit permission to test.
+
+Unauthorized access, credential attacks, vulnerability testing, or other activity against systems without permission may be illegal.
+
+The author is not responsible for any misuse, damage, unauthorized access, data loss, or other consequences resulting from the use of this software.
+
+**Use responsibly and only with proper authorization.**
+
+---
+
+## Author
+
+**Abed (Nullit13)**
+
+GitHub: https://github.com/Nullit13
+
+Project: https://github.com/Nullit13/winraider
+
+---
+
+## License
+
+WinRaider is released under the MIT License.
+
+See the `LICENSE` file for details.
+
+---
+
+## Project Goals
+
+WinRaider is intended to make Windows security testing easier to perform from a single command-line interface while keeping the tool useful for security research, testing, and lab environments.

@@ -1,10 +1,11 @@
 import nmap
 import json
+from utils import color_text, Colors
 
 def nmap_scan(target):
     scanner = nmap.PortScanner()
     ports = '445,3389,5985,5986,139,135,22'
-    print(f"Scanning machine({target}) ...")
+    print(color_text(f"Scanning machine({target}) ...", Colors.BLUE))
     scanner.scan(target, ports)
 
     hosts_data = []
@@ -32,7 +33,7 @@ def filter_open_ports(json_data):
     else:
         data = json_data
     
-    result = {}
+    result = []
     
     for host_entry in data:
         open_ports = []
@@ -43,5 +44,10 @@ def filter_open_ports(json_data):
         if open_ports:
             result = open_ports
         else:
-            print("No open ports found!")
+            print(color_text("No open ports found!", Colors.YELLOW))
     return result
+
+def scan_only(open_ports):
+    print(color_text("\n[+] Scan completed. Open ports found:", Colors.GREEN))
+    for port in open_ports:
+        print(f"    - {port}")

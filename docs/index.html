@@ -3,49 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WinRaider — Documentation</title>
+<title>WinRaider 2.0 — Documentation</title>
 <meta name="description" content="WinRaider Windows Security Assessment & Penetration Testing Toolkit documentation.">
 <style>
 :root {
-    --bg: #07090d;
-    --panel: #0d1118;
-    --panel2: #111722;
-    --text: #edf2f8;
-    --muted: #91a0b4;
-    --line: #202938;
-    --green: #65f6b2;
-    --blue: #65a8ff;
-    --yellow: #ffc857;
-    --red: #ff7180;
-    --radius: 18px;
+    --bg: #0b0d10;
+    --panel: #11151a;
+    --panel2: #171c22;
+    --text: #e6e9ed;
+    --muted: #8b949e;
+    --line: #292f36;
+    --green: #67e8a5;
+    --blue: #75a7ff;
+    --yellow: #e4bd65;
+    --red: #e46d79;
+    --radius: 10px;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
-    background:
-        radial-gradient(circle at 75% -10%, #65a8ff18, transparent 31%),
-        radial-gradient(circle at 12% 18%, #65f6b20e, transparent 30%),
-        var(--bg);
+    background: var(--bg);
     color: var(--text);
-    font: 15px/1.7 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font: 15px/1.65 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
 .shell {
     display: grid;
-    grid-template-columns: 270px 1fr;
+    grid-template-columns: 250px minmax(0, 1fr);
     min-height: 100vh;
 }
 
@@ -54,89 +44,84 @@ aside {
     top: 0;
     height: 100vh;
     overflow: auto;
-    padding: 25px 18px;
+    padding: 24px 16px;
     border-right: 1px solid var(--line);
-    background: #07090ddd;
-    backdrop-filter: blur(18px);
+    background: #0b0d10;
 }
 
 .brand {
     display: flex;
-    gap: 11px;
+    gap: 10px;
     align-items: center;
-    margin: 0 7px 30px;
+    margin: 0 7px 28px;
 }
 
 .mark {
-    width: 41px;
-    height: 41px;
-    border: 1px solid #65f6b266;
-    border-radius: 12px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #34403a;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     color: var(--green);
-    box-shadow: 0 0 28px #65f6b214;
-    font-weight: 900;
+    font-weight: 800;
 }
 
-.brand b {
-    font-size: 17px;
-}
+.brand b { font-size: 16px; }
 
 .brand small {
     display: block;
-    color: #68758a;
+    color: #68717c;
     font-size: 9px;
-    letter-spacing: 1.6px;
+    letter-spacing: 1.3px;
     text-transform: uppercase;
 }
 
 .label {
     margin: 22px 9px 7px;
-    color: #647187;
+    color: #68717c;
     font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 1.6px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
 }
 
 nav a {
     display: block;
-    padding: 9px 11px;
-    border-radius: 10px;
-    color: #98a5b7;
-    transition: 0.18s;
+    padding: 8px 10px;
+    border-radius: 7px;
+    color: #9aa3ad;
+    transition: background .15s, color .15s;
 }
 
 nav a:hover {
-    background: var(--panel2);
+    background: #171c22;
     color: var(--text);
-    transform: translateX(2px);
 }
 
 .side-note {
-    margin: 25px 5px;
-    padding: 13px;
+    margin: 24px 5px;
+    padding: 12px;
     border: 1px solid var(--line);
-    border-radius: 13px;
-    color: #8390a3;
+    border-radius: 8px;
+    color: #7f8994;
     font-size: 11px;
 }
 
 main {
-    width: min(1160px, 100%);
-    margin: auto;
-    padding: 38px 55px 80px;
+    width: min(1080px, 100%);
+    margin: 0 auto;
+    padding: 32px 48px 70px;
 }
 
 section {
-    padding: 66px 0;
+    padding: 58px 0;
     border-top: 1px solid var(--line);
-    scroll-margin-top: 25px;
+    scroll-margin-top: 20px;
 }
 
 .hero {
-    min-height: 610px;
+    min-height: 570px;
     display: flex;
     align-items: center;
     position: relative;
@@ -144,134 +129,118 @@ section {
 }
 
 .grid {
-    position: absolute;
-    inset: 0;
-
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-
-    background-size: 50px 50px;
-    opacity: 0.12;
-    mask-image: linear-gradient(#000, transparent 75%);
-    pointer-events: none;
+    display: none;
 }
 
 .pill {
     display: inline-flex;
-    gap: 8px;
+    gap: 7px;
     align-items: center;
-    padding: 6px 10px;
-    border: 1px solid #65f6b240;
-    border-radius: 99px;
-    background: #65f6b209;
+    padding: 5px 9px;
+    border: 1px solid #34403a;
+    border-radius: 6px;
+    background: #101613;
     color: var(--green);
     font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 1.2px;
+    font-weight: 700;
+    letter-spacing: .9px;
     text-transform: uppercase;
 }
 
 .dot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--green);
-    box-shadow: 0 0 14px var(--green);
 }
 
 h1 {
-    font-size: clamp(52px, 8vw, 94px);
-    line-height: 0.9;
-    letter-spacing: -5px;
-    margin: 24px 0 22px;
-    max-width: 900px;
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: .95;
+    letter-spacing: -4px;
+    margin: 22px 0 20px;
+    max-width: 850px;
 }
 
-.grad {
-    background: linear-gradient(100deg, #fff 8%, var(--green) 52%, var(--blue));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
+.grad { color: var(--green); }
 
 .hero p {
-    max-width: 740px;
-    color: #acb7c7;
-    font-size: 18px;
+    max-width: 720px;
+    color: #a7afb8;
+    font-size: 17px;
 }
 
 .buttons {
     display: flex;
-    gap: 12px;
+    gap: 9px;
     flex-wrap: wrap;
-    margin-top: 26px;
+    margin-top: 24px;
 }
 
 .btn {
     display: inline-block;
     border: 1px solid var(--line);
     background: var(--panel);
-    border-radius: 11px;
-    padding: 10px 15px;
-    font-weight: 750;
-    transition: 0.2s;
+    border-radius: 7px;
+    padding: 9px 13px;
+    font-weight: 650;
+    transition: background .15s, border-color .15s;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    border-color: #3b485c;
+    background: var(--panel2);
+    border-color: #3a424b;
 }
 
 .primary {
     background: var(--green);
-    color: #06100b;
+    color: #07110c;
     border-color: var(--green);
 }
 
 .kicker {
-    color: var(--green);
+    color: #7ddca5;
     font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 2px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
     text-transform: uppercase;
 }
 
 h2 {
-    font-size: 36px;
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    margin: 8px 0 10px;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin: 7px 0 9px;
 }
 
 .lead {
     color: var(--muted);
-    max-width: 760px;
+    max-width: 740px;
 }
 
 .cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-top: 25px;
+    gap: 12px;
+    margin-top: 23px;
 }
 
 .card {
-    padding: 21px;
+    padding: 19px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    background: linear-gradient(145deg, #ffffff09, #ffffff02);
-    box-shadow: 0 15px 45px #0005;
+    background: var(--panel);
 }
+
+.card:hover { border-color: #353c44; }
 
 .ico {
-    font-size: 22px;
-    margin-bottom: 12px;
+    font-size: 19px;
+    margin-bottom: 11px;
+    color: #aab3bd;
 }
 
-.card h3 {
-    margin: 0 0 6px;
-}
+.card h3 { margin: 0 0 6px; font-size: 16px; }
 
 .card p {
     margin: 0;
@@ -282,29 +251,28 @@ h2 {
 pre {
     position: relative;
     overflow: auto;
-    margin: 18px 0;
-    padding: 19px;
+    margin: 17px 0;
+    padding: 17px;
     border: 1px solid var(--line);
-    border-radius: 14px;
-    background: #05070a;
-    color: #dce5f0;
-    box-shadow: 0 15px 45px #0005;
+    border-radius: 8px;
+    background: #080a0d;
+    color: #d5dbe1;
 }
 
 code {
-    font-family: "SFMono-Regular", Consolas, monospace;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-size: 13px;
 }
 
 .copy {
     position: absolute;
-    right: 9px;
-    top: 9px;
-    border: 1px solid #293444;
-    background: #111722;
-    color: #aab6c6;
-    border-radius: 8px;
-    padding: 5px 8px;
+    right: 8px;
+    top: 8px;
+    border: 1px solid #303740;
+    background: #151a20;
+    color: #9ca6b1;
+    border-radius: 6px;
+    padding: 4px 7px;
     cursor: pointer;
     font-size: 10px;
 }
@@ -312,20 +280,18 @@ code {
 .args {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 11px;
-    margin-top: 22px;
+    gap: 10px;
+    margin-top: 21px;
 }
 
 .arg {
-    padding: 15px;
+    padding: 14px;
     border: 1px solid var(--line);
-    border-radius: 13px;
-    background: #ffffff03;
+    border-radius: 8px;
+    background: var(--panel);
 }
 
-.arg code {
-    color: var(--green);
-}
+.arg code { color: var(--green); }
 
 .arg p {
     margin: 5px 0 0;
@@ -338,15 +304,14 @@ table {
     border-collapse: separate;
     border-spacing: 0;
     overflow: hidden;
-    margin-top: 24px;
+    margin-top: 22px;
     border: 1px solid var(--line);
-    border-radius: 15px;
-    background: #ffffff02;
+    border-radius: 8px;
+    background: var(--panel);
 }
 
-th,
-td {
-    padding: 14px 15px;
+th, td {
+    padding: 12px 14px;
     text-align: left;
     border-bottom: 1px solid var(--line);
 }
@@ -354,100 +319,76 @@ td {
 th {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: #a8b4c5;
+    letter-spacing: 1px;
+    color: #a3adb8;
     background: var(--panel2);
 }
 
-td {
-    color: #c8d1dd;
-    font-size: 13px;
-}
+td { color: #c4cbd3; font-size: 13px; }
 
-td:first-child {
-    color: var(--green);
-    font-weight: 900;
-}
+td:first-child { color: var(--green); font-weight: 700; }
 
-tr:last-child td {
-    border-bottom: 0;
-}
+tr:last-child td { border-bottom: 0; }
 
 .notice {
-    margin-top: 20px;
-    padding: 17px 19px;
-    border: 1px solid #ffc85742;
-    background: #ffc8570a;
-    border-radius: 14px;
-    color: #d2c5a5;
+    margin-top: 18px;
+    padding: 15px 17px;
+    border: 1px solid #5a4b2d;
+    background: #17140e;
+    border-radius: 8px;
+    color: #cbbf9f;
 }
 
 .danger {
-    border-color: #ff71804a;
-    background: #ff71800b;
-    color: #dbb4ba;
+    border-color: #5a3036;
+    background: #171012;
+    color: #d1aeb3;
 }
 
 .inline {
     padding: 2px 5px;
-    background: #151c27;
-    border-radius: 5px;
+    background: #171c22;
+    border-radius: 4px;
     color: var(--green);
     font-family: monospace;
 }
 
 .author {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     align-items: center;
-    padding: 21px;
+    padding: 18px;
     border: 1px solid var(--line);
-    border-radius: 17px;
+    border-radius: 9px;
     background: var(--panel);
 }
 
 .avatar {
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     display: grid;
     place-items: center;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--green), var(--blue));
-    color: #06100b;
-    font-weight: 1000;
+    border-radius: 8px;
+    background: #1a211d;
+    border: 1px solid #34403a;
+    color: var(--green);
+    font-weight: 800;
 }
 
 footer {
     border-top: 1px solid var(--line);
-    padding-top: 25px;
-    color: #657186;
+    padding-top: 22px;
+    color: #65707c;
     font-size: 11px;
 }
 
 @media (max-width: 850px) {
-    .shell {
-        grid-template-columns: 1fr;
-    }
-
-    aside {
-        display: none;
-    }
-
-    main {
-        padding: 25px 20px 60px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .args {
-        grid-template-columns: 1fr;
-    }
-
-    h1 {
-        letter-spacing: -3px;
-    }
+    .shell { grid-template-columns: 1fr; }
+    aside { display: none; }
+    main { padding: 24px 20px 55px; }
+    .cards { grid-template-columns: 1fr; }
+    .args { grid-template-columns: 1fr; }
+    h1 { letter-spacing: -3px; }
 }
 </style>
 </head>
@@ -459,16 +400,16 @@ footer {
 <a href="#features">Features</a><a href="#installation">Installation</a><a href="#usage">Usage</a>
 <a href="#arguments">CLI arguments</a><a href="#ports">Ports</a><a href="#wordlists">Wordlists</a>
 </nav>
-<div class="label">Project</div><nav><a href="#lab">Lab environment</a><a href="#legal">Legal</a><a href="#author">Author</a><a href="#license">License</a></nav>
+<div class="label">Project</div><nav><a href="#lab">Lab environment</a><a href="#version">v2.0</a><a href="#legal">Legal</a><a href="#author">Author</a><a href="#license">License</a></nav>
 <div class="side-note">⚠️ Authorized security testing, education, research, and defensive assessment only.</div>
 </aside>
 
 <main id="top">
 <section class="hero">
 <div class="grid"></div><div>
-<span class="pill"><span class="dot"></span> Python · Windows · Security</span>
+<span class="pill"><span class="dot"></span> v2.0 · Python · Windows · Security</span>
 <h1>Windows security testing,<br><span class="grad">focused.</span></h1>
-<p>WinRaider is a Python-based Windows penetration-testing and security-assessment toolkit for authorized testing, research, and educational lab environments.</p>
+<p>WinRaider 2.0 is a Python-based Windows security assessment and penetration-testing toolkit for authorized testing, research, and educational lab environments.</p>
 <div class="buttons"><a class="btn primary" href="#installation">Get started →</a><a class="btn" href="https://github.com/Nullit13/winraider/" target="_blank" rel="noopener">GitHub ↗</a></div>
 </div>
 </section>
@@ -480,7 +421,7 @@ footer {
 <div class="card"><div class="ico">⌕</div><h3>Vulnerability assessment</h3><p>Checks for EternalBlue/MS17-010, BlueKeep/CVE-2019-0708, SMBGhost/CVE-2020-0796, WinRM weaknesses, NetBIOS disclosure, and SSH vulnerabilities.</p></div>
 <div class="card"><div class="ico">⚿</div><h3>Credential testing</h3><p>Accepts username and password wordlists for controlled credential-security assessments.</p></div>
 <div class="card"><div class="ico">✦</div><h3>Metasploit integration</h3><p>Can integrate with a locally available <code>msfconsole</code> for supported security-testing workflows.</p></div>
-<div class="card"><div class="ico">▣</div><h3>Professional CLI</h3><p>Banner, quiet mode, verbose mode, target parsing, credentials, wordlists, and Metasploit configuration.</p></div>
+<div class="card"><div class="ico">▣</div><h3>Professional CLI</h3><p>Banner, quiet mode, verbose mode, target parsing, credentials, wordlists, logging, reports, and Metasploit configuration.</p></div>
 </div></section>
 
 <section id="installation"><span class="kicker">02 · Installation</span><h2>Install locally.</h2><p class="lead">Windows + Python 3.x are required. Metasploit is optional.</p>
@@ -491,7 +432,7 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 
 pip install -r requirements.txt
-python winraider.py --help</code></pre>
+python main.py --help</code></pre>
 <div class="notice">Use a dedicated virtual environment and run WinRaider only against systems you are explicitly authorized to assess.</div>
 </section>
 
@@ -506,11 +447,15 @@ python winraider.py --help</code></pre>
 
 <section id="arguments"><span class="kicker">04 · CLI reference</span><h2>Every flag at a glance.</h2>
 <div class="args">
-<div class="arg"><code>-t, --target</code><p>Required target IP address.</p></div><div class="arg"><code>-u, --username</code><p>Username for authenticated testing.</p></div>
-<div class="arg"><code>-p, --password</code><p>Password for authenticated testing.</p></div><div class="arg"><code>-w, --wordlist</code><p>Password wordlist.</p></div>
-<div class="arg"><code>--users</code><p>Username wordlist.</p></div><div class="arg"><code>--msfpath</code><p>Path to Metasploit <code>msfconsole</code>.</p></div>
+<div class="arg"><code>-t, --target</code><p>Required target IP address for target-based operations.</p></div><div class="arg"><code>--discover</code><p>Discover Windows devices on the local network.</p></div>
+<div class="arg"><code>-u, --username</code><p>Username for authenticated testing.</p></div><div class="arg"><code>-p, --password</code><p>Password for authenticated testing.</p></div>
+<div class="arg"><code>-w, --wordlist</code><p>Password wordlist. Defaults to <code>wordlists/passwords.txt</code>.</p></div><div class="arg"><code>--users</code><p>Username wordlist. Defaults to <code>wordlists/users.txt</code>.</p></div>
+<div class="arg"><code>--threads</code><p>Number of threads used by credential-testing workflows. Default: 10.</p></div><div class="arg"><code>--msfpath</code><p>Path to Metasploit <code>msfconsole</code>.</p></div>
 <div class="arg"><code>--lhost</code><p>Local host IP for supported Metasploit workflows.</p></div><div class="arg"><code>-v, --verbose</code><p>Verbose output.</p></div>
-<div class="arg"><code>-q, --quiet</code><p>Quiet mode.</p></div>
+<div class="arg"><code>-q, --quiet</code><p>Quiet mode with minimal output.</p></div><div class="arg"><code>--log</code><p>Write activity to <code>winraider.log</code>.</p></div>
+<div class="arg"><code>--report</code><p>Save assessment results to a report file.</p></div><div class="arg"><code>--scan</code><p>Run port scanning only.</p></div>
+<div class="arg"><code>--zero</code><p>Run vulnerability checks without credentials.</p></div><div class="arg"><code>--creds</code><p>Run authorized testing with supplied credentials.</p></div>
+<div class="arg"><code>--brute</code><p>Run authorized credential wordlist testing.</p></div>
 </div></section>
 
 <section id="ports"><span class="kicker">05 · Service matrix</span><h2>Supported ports.</h2>
@@ -559,12 +504,14 @@ The author and contributors are not responsible for misuse, damage, data loss, u
 </div></section>
 
 <section id="author"><span class="kicker">09 · Project</span><h2>Author.</h2>
-<div class="author"><div class="avatar">AA</div><div><strong>Adam Abed</strong><div style="color:var(--muted);font-size:12px">GitHub: @Nullit13 · WinRaider · Python</div></div></div></section>
+<div class="author"><div class="avatar">AA</div><div><strong>Abed (Nullit13)</strong><div style="color:var(--muted);font-size:12px">GitHub: @Nullit13 · WinRaider · Python · v2.0</div></div></div></section>
 
-<section id="license"><span class="kicker">10 · License</span><h2>MIT License.</h2><p class="lead">WinRaider is released under the MIT License. Keep the repository's <span class="inline">LICENSE</span> file alongside the project.</p>
+<section id="version"><span class="kicker">10 · Release</span><h2>What changed in v2.0.</h2><div class="cards"><div class="card"><h3>Discovery</h3><p>Windows device discovery is available through <code>--discover</code> for local authorized lab networks.</p></div><div class="card"><h3>Assessment modes</h3><p>Separate scan, vulnerability, authenticated, and credential-testing modes make workflows easier to control.</p></div><div class="card"><h3>Reporting</h3><p>Activity logging and report output can be enabled with <code>--log</code> and <code>--report</code>.</p></div></div></section>
+
+<section id="license"><span class="kicker">11 · License</span><h2>MIT License.</h2><p class="lead">WinRaider is released under the MIT License. Keep the repository's <span class="inline">LICENSE</span> file alongside the project.</p>
 <pre><code>MIT License
 
-Copyright (c) 2026 Adam Abed
+Copyright (c) 2026 Abed (Nullit13)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files, to deal in the Software
@@ -574,7 +521,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</code></pre></section>
 
-<footer>WinRaider Documentation · © 2026 Adam Abed · Use responsibly.</footer>
+<footer>WinRaider Documentation · © 2026 Abed (Nullit13) · Use responsibly.</footer>
 </main></div>
 <script>
 function copyCode(btn){
