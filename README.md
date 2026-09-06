@@ -385,7 +385,7 @@ The author is not responsible for any misuse, damage, unauthorized access, data 
 
 ## Author
 
-**Abed (Nullit13)**
+**Adam (Nullit13)**
 
 GitHub: https://github.com/Nullit13
 
