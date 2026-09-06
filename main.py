@@ -178,7 +178,7 @@ def main():
     
     elif args.brute:
         print(color_text("\n[+] Starting brute force attack...", Colors.GREEN))
-        username, password = brute_force(args.target, args.users, args.wordlist, args.threads)
+        username, password = brute_force(args.target, args.users, args.wordlist, open_ports, args.threads)
         if username and password:
             print(color_text(f"\n[+] Credentials found: {username}:{password}", Colors.GREEN))
             attack_with_credentials(args.target, username, password, open_ports)
